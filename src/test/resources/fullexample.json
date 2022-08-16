@@ -1,0 +1,35 @@
+{
+  "fieldInt": 150,
+  "fieldBoolean": true,
+  "color": "RED",
+  "fieldDouble": 17.625,
+  "fieldString": "testing",
+  "fieldBytes": [
+    62,
+    -115
+  ],
+  "innerId": {
+    "id": 150
+  },
+  "repeated": [
+    "1",
+    "2"
+  ],
+  "fieldFloat": 0.625,
+  "fieldList": [
+    150,
+    150
+  ],
+  "fieldStringList": [
+    "ing",
+    "test"
+  ],
+  "fieldMap": {
+    "ing": {
+      "id": 1
+    },
+    "test": {
+      "id": 150
+    }
+  }
+}

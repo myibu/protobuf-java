@@ -1,0 +1,88 @@
+// https://central.sonatype.org/pages/gradle.html
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+tasks.withType(Javadoc) { options.encoding = "UTF-8" }
+tasks.withType(JavaCompile) { options.encoding = "UTF-8" }
+
+group = 'com.github.myibu'
+archivesBaseName = "protobuf-java"
+version = "1.0.0"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation ('com.github.myibu:algorithm-java:1.0.5')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'com.google.protobuf:protobuf-java:3.21.4'
+    testCompile group: 'org.json', name: 'json', version: '20160212'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'protobuf-java'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'GRPC protocol implements in java'
+                url 'https://github.com/myibu/protobuf-java'
+
+                scm {
+                    connection 'scm:svn:http://foo.googlecode.com/svn/trunk/'
+                    developerConnection 'scm:svn:https://foo.googlecode.com/svn/trunk/'
+                    url 'http://foo.googlecode.com/svn/trunk/'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'myibu'
+                        name 'myibu'
+                        email '1337078409@qq.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+jar.enabled = true

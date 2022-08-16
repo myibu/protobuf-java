@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package tutorial;
+
+//option java_multiple_files = true;
+option java_package = "com.github.myibu.proto.protos";
+option java_outer_classname = "SimpleProto";
+
+message InnerId {
+  int32 id = 1;
+//  int32 id2 = 2;
+}
+
+message Simple {
+   repeated InnerId id = 3;
+//  map<int32, float> fieldMap = 1;
+//  InnerId innerId1 = 1;
+//  InnerId innerId2 = 2;
+}
